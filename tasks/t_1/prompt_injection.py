@@ -1,4 +1,4 @@
-from langchain_core.messages import BaseMessage, SystemMessage, HumanMessage
+from langchain_core.messages import BaseMessage, SystemMessage, HumanMessage, AIMessage
 from langchain_openai import AzureChatOpenAI
 from pydantic import SecretStr
 
@@ -25,14 +25,38 @@ PROFILE = """
 """
 
 def main():
-    #TODO 1:
     # 1. Create AzureChatOpenAI client, model to use `gpt-4.1-nano-2025-04-14` (or any other mini or nano models)
+    llm_client = AzureChatOpenAI(
+        model='gpt-4.1-nano-2025-04-14',
+        azure_endpoint=DIAL_URL,
+        api_key=SecretStr(API_KEY),
+        api_version="")
+
     # 2. Create messages array with system prompt as 1st message and user message with PROFILE info (we emulate the
     #    flow when we retrieved PII from some DB and put it as user message).
+    messages = [
+        SystemMessage(SYSTEM_PROMPT),
+        HumanMessage(PROFILE)
+    ]
+
     # 3. Create console chat with LLM, preserve history (user and assistant messages should be added to messages array
     #   and each new request you must provide whole conversation history. With preserved history we can make multistep
     #   (more complicated strategy) of prompt injection).
-    raise NotImplementedError
+    print("What would you like to do?")
+    while True:
+        user_input = input("> ").strip()
+        if user_input == "exit":
+            break
+
+        messages.append(HumanMessage(user_input))
+
+        response: AIMessage = llm_client.invoke(messages)
+
+        print(response.content)
+
+
+    print("Exiting.... Bye!")
+
 
 
 main()
