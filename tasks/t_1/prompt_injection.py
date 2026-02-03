@@ -42,7 +42,6 @@ def main():
     # 3. Create console chat with LLM, preserve history (user and assistant messages should be added to messages array
     #   and each new request you must provide whole conversation history. With preserved history we can make multistep
     #   (more complicated strategy) of prompt injection).
-    print("What would you like to do?")
     while True:
         user_input = input("> ").strip()
         if user_input == "exit":
