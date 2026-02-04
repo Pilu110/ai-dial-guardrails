@@ -74,7 +74,7 @@ def main():
     # 1. Create messages array with system prompt as 1st message and user message with PROFILE info (we emulate the
     #    flow when we retrieved PII from some DB and put it as user message).
 
-    messages = [
+    messages: list[BaseMessage] = [
         SystemMessage(SYSTEM_PROMPT),
         HumanMessage(PROFILE)
     ]
@@ -105,7 +105,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-#TODO:
 # ---------
 # Create guardrail that will prevent prompt injections with user query (input guardrail).
 # Flow:
